@@ -7,3 +7,11 @@ Requirements of the app:
 3. Create a medical database
 4. The app must require a username and a password
 5. Use of git for version control
+
+### notes
+
+1. medical data consists of:
+   a. patient name(lastname, firstname)
+   b. diagnosis
+   c. presciption
+   d. desciption
