@@ -55,8 +55,30 @@ class App(tk.Tk):
         self.label.pack(side="left")
         self.entry = ttk.Entry(self.frame, width=30)
         self.entry.pack(side="right")
+        return self.entry
+
+
+class loginWindow(App):
+    def __init__(self):
+        super().__init__()
+        self.createFrame()
+        self.username = self.createEntry("username")
+        self.password = self.createEntry("password")
+        label = lambda: self.printthis()
+        login = self.createButton(label, "log in")
+
+    def printthis(self):
+        print(
+            f"username: {self.username.get()}\npassword:{self.password.get()}\nLOGGEDIN!"
+        )
+
+
+def welcomeWindow():
+    app = App()
+
+    app.mainloop()
 
 
 if __name__ == "__main__":
-    app = App()
+    app = loginWindow()
     app.mainloop()
