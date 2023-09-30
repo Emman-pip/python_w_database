@@ -10,24 +10,51 @@ class App(tk.Tk):
         super().__init__()
         self.title("Medical Database App")
         self.geometry("500x500")
-        # TO put function as a parameter
-        # self.createButton(lambda: self.createLabel("YAHU"), "click?")
+        # # TO put function as a parameter
+        # self.lol = lambda: self.createFrame("red")
+        # self.createButton(lambda: self.createEntry(), "click?")
 
-    def rawLabel(self, text):
-        self.label = ttk.Label(self, text=f"{text}")
+    # def createFrame(self, bgColor, height=None, width=None):
+    #     self.frame = ttk.Frame(bg=bgColor)
+    #     if height != None and width != None:
+    #         self.frame["height"] = height
+    #         self.frame["width"] = width
+    #     self.frame.pack()
+
+    def createFrame(self, masterFrame=None):
+        if masterFrame != None:
+            self.frame = ttk.Frame(masterFrame)
+        else:
+            self.frame = ttk.Frame(self)
+        self.frame.pack()
+
+    def createLabel(self, text="sometext", masterFrame=None):
+        if masterFrame != None:
+            self.label = ttk.Label(masterFrame)
+        else:
+            self.label = ttk.Label(self)
+        self.label["text"] = f"{text}"
         self.label.pack()
 
-    def createLabel(self, text="sometext"):
-        self.rawLabel(text)
-
-    def createButton(self, command, itext="click me"):
-        self.button = ttk.Button(self, text=itext)
+    def createButton(self, command, itext="click me", masterFrame=None):
+        if masterFrame != None:
+            self.button = ttk.Button(masterFrame)
+        else:
+            self.button = ttk.Button(self)
         self.button["command"] = command
+        self.button["text"] = itext
         self.button.pack()
 
-    # def button_clicked(self):
-    #     self.label2 = ttk.Label(self, text="YOUCLICKED!!")
-    #     self.label2.pack()
+    def createEntry(self, ltext="label", masterFrame=None):
+        if masterFrame != None:
+            self.frame = ttk.Frame(masterFrame)
+        else:
+            self.frame = ttk.Frame(self)
+        self.frame.pack()
+        self.label = self.label = ttk.Label(self.frame, text=f"{ltext}:")
+        self.label.pack(side="left")
+        self.entry = ttk.Entry(self.frame, width=30)
+        self.entry.pack(side="right")
 
 
 if __name__ == "__main__":
