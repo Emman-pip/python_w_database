@@ -7,7 +7,7 @@
 import mysql.connector
 
 mydb = mysql.connector.connect(
-    host="localhost", user="root", password="108996eE@emman", database="sampledb"
+    host="localhost", user="root", password="108996eE@emman", database="medicalDB"
 )
 
 myCursor = mydb.cursor()
@@ -29,9 +29,10 @@ def createTABLE(tablename, *name):
         if i == name[-1]:
             values += f"{i}"
             break
-        values += f"{i},"
-    command = f"CREATE TABLE {tablename} ({values})"
+        values += f"{i}, "
+    command = f"CREATE TABLE {tablename}({values})"
     mydb.start_transaction()
+    print(command)
     myCursor.execute(command)
     mydb.commit()
     mydb.close()
@@ -43,7 +44,9 @@ def select(tablename, columns):
     myResult = myCursor.fetchall()
     for i in myResult:
         print(i)
+
     mydb.close()
+    return myResult
 
 
 def insert(tablename, parameters, *values):
@@ -55,6 +58,9 @@ def insert(tablename, parameters, *values):
             break
         columns += f"{i},"
     for x in values:
+        if type(x) is tuple:
+            data += f"{x}"
+            continue
         if x == values[-1]:
             data += f"('{x}')"
             break
@@ -69,5 +75,11 @@ def insert(tablename, parameters, *values):
     mydb.close()
 
 
-# insert("sample_table", ["name"], ("Juju"), ("Jumanji"))
-# select("sample_table", "*")
+# insert(
+#     "patient_data",
+#     ("name", "diagnosis", "prescription", "description"),
+#     ("John Doe", "cancer", "chemo theraphy", "terminal stage"),
+# )
+
+result = select("patient_data", "*")
+print(result)
