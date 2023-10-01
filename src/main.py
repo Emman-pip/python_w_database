@@ -83,6 +83,9 @@ class App(tk.Tk):
         self.entry.pack(side="right")
         return self.entry
 
+    def restart(self):
+        os.execl(sys.executable, sys.executable, *sys.argv)
+
 
 class loginWindow(App):
     def __init__(self):
@@ -95,9 +98,7 @@ class loginWindow(App):
         label = lambda: self.printthis()
         login = self.createButton(label, "log in")
         # back = self.createButton(lambda: launchMainApp(self), "go back")
-        back = self.createButton(
-            lambda: os.execl(sys.executable, sys.executable, *sys.argv), "go back"
-        )
+        back = self.createButton(lambda: self.restart(), "go back")
         user.pack()
         password.pack()
         login.pack()
