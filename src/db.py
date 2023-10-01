@@ -87,9 +87,9 @@ def insert(tablename, parameters, *values):
 # insert(
 #     "patient_data",
 #     ("name", "diagnosis", "prescription", "description"),
-#     ("Jahn Doe", "cancer", "chemo theraphy", "terminal stage"),
-#     ("Jenny Doe", "cancer", "chemo theraphy", "terminal stage"),
-#     ("Jenny Doe", "cancer", "chemo theraphy", "terminal stage"),
+#     ("Emily Rose", "cancer", "chemo theraphy", "terminal stage"),
+#     ("Maan Moar", "cancer", "chemo theraphy", "terminal stage"),
+#     ("Kale tens", "cancer", "chemo theraphy", "terminal stage"),
 # )
 
 

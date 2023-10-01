@@ -7,6 +7,7 @@ Requirements of the app:
 3. Create a medical database
 4. The app must require a username and a password
 5. Use of git for version control
+6. the app should be able to search for patients
 
 ### notes
 
