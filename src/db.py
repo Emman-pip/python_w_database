@@ -42,8 +42,8 @@ def select(tablename, columns):
     mydb.start_transaction()
     myCursor.execute(f"SELECT {columns} FROM {tablename}")
     myResult = myCursor.fetchall()
-    for i in myResult:
-        print(i)
+    # for i in myResult:
+    #     print(i)
 
     mydb.close()
     return myResult
@@ -59,8 +59,12 @@ def insert(tablename, parameters, *values):
         columns += f"{i},"
     for x in values:
         if type(x) is tuple:
-            data += f"{x}"
+            if x == values[-1]:
+                data += f"{x}"
+                break
+            data += f"{x},"
             continue
+
         if x == values[-1]:
             data += f"('{x}')"
             break
@@ -68,7 +72,7 @@ def insert(tablename, parameters, *values):
     print(parameters[0], columns, data)
 
     command = f"INSERT INTO {tablename}({columns}) VALUES{data};"
-    print(command)
+    print("HERE", command)
     mydb.start_transaction()
     myCursor.execute(command)
     mydb.commit()
@@ -80,6 +84,15 @@ def insert(tablename, parameters, *values):
 #     ("name", "diagnosis", "prescription", "description"),
 #     ("John Doe", "cancer", "chemo theraphy", "terminal stage"),
 # )
+# insert(
+#     "patient_data",
+#     ("name", "diagnosis", "prescription", "description"),
+#     ("Jahn Doe", "cancer", "chemo theraphy", "terminal stage"),
+#     ("Jenny Doe", "cancer", "chemo theraphy", "terminal stage"),
+#     ("Jenny Doe", "cancer", "chemo theraphy", "terminal stage"),
+# )
 
-result = select("patient_data", "*")
-print(result)
+
+def selectAll():
+    result = select("patient_data", "*")
+    return result
