@@ -16,3 +16,4 @@ Requirements of the app:
    b. diagnosis
    c. presciption
    d. desciption
+2. try to integrate customtkinter module for modern GUI
