@@ -3,6 +3,7 @@ from tkinter import ttk
 from db import *
 import os
 import sys
+from threading import Timer
 
 # TODO: see if it is possible to show all in a text bo so it will be scrollable
 
@@ -95,18 +96,28 @@ class loginWindow(App):
         frm.pack()
         user = self.username = self.createEntry("username")
         password = self.password = self.createEntry("password")
-        label = lambda: self.printthis()
-        login = self.createButton(label, "log in")
+        # label = lambda: self.printthis()
+        self.login = self.createButton(lambda: self.printthis(), "log in")
+        # login.show = "*"
         # back = self.createButton(lambda: launchMainApp(self), "go back")
         back = self.createButton(lambda: self.restart(), "go back")
         user.pack()
         password.pack()
-        login.pack()
+        self.login.pack()
 
     def printthis(self):
-        print(
-            f"username: {self.username.get()}\npassword:{self.password.get()}\nLOGGEDIN!"
-        )
+        if self.username.get() == "root" and self.password.get() == "root":
+            self.destroy()
+        # print(
+        #     f"username: {self.username.get()}\npassword:{self.password.get()}\nLOGGEDIN!"
+        # )
+        text = self.createLabel("Invalid credentials")
+        text["foreground"] = "red"
+        text.pack()
+        disappearingText = Timer(1.0, lambda: text.pack_forget())
+        disappearingText.start()
+
+        # pass
 
 
 class mainWindow(App):
