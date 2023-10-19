@@ -13,21 +13,47 @@ padding = 10
 class App(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        # self.geometry("1000x750")
+        self.geometry("1000x750")
         self.title("Hospital Records")
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(0, weight=1)
 
-        self.frm_left = customtkinter.CTkFrame(self, border_color="dark_color")
-        self.frm_left.grid(
-            row=0, column=0, padx=padding, pady=padding, sticky="ns", columnspan=1
+        self.frm = customtkinter.CTkFrame(
+            self,
+            width=300,
+        )
+        self.frm.grid(
+            row=0,
+            column=0,
+            # padx=padding,
+            # pady=padding,
+            sticky="nswe",
         )
         # self.frm_left.columnconfigure(0, weight=0)
+        self.frm.grid_columnconfigure(1, weight=3)
+        self.frm.grid_rowconfigure(0, weight=1)
 
-        self.frm_records = customtkinter.CTkFrame(self, border_color="dark_color")
+        self.frm_left = customtkinter.CTkFrame(
+            self.frm,
+            width=300,
+        )
+        self.frm_left.grid(
+            row=0,
+            column=0,
+            padx=padding,
+            pady=padding,
+            sticky="nswe",
+        )
+
+        self.frm_records = customtkinter.CTkFrame(self.frm, border_color="dark_color")
         # self.frm_records.columnconfigure(0, weight=1)
         self.frm_records.grid(
-            row=0, column=1, padx=padding, pady=padding, sticky="nsew", columnspan=3
+            row=0,
+            column=1,
+            padx=padding,
+            pady=padding,
+            sticky="nsew",
+            # columnspan=3,
         )
 
         self.btn_someButton = customtkinter.CTkButton(self.frm_left, text="click me")
