@@ -45,6 +45,24 @@ class App(customtkinter.CTk):
             sticky="nswe",
         )
 
+        # elements on the left side
+
+        self.frm_search = customtkinter.CTkFrame(self.frm_left)
+        self.frm_search.grid(row=0, padx=padding, pady=padding)
+        self.btn_login = customtkinter.CTkButton(self.frm_left, text="login")
+        self.btn_login.grid(
+            row=1,
+            pady=padding,
+            padx=padding,
+        )
+        self.ent_search = customtkinter.CTkEntry(
+            self.frm_search,
+            placeholder_text="Enter Patient ID",
+        )
+        self.ent_search.grid(row=0, column=0)
+        self.btn_search = customtkinter.CTkButton(self.frm_search, text="search")
+        self.btn_search.grid(row=1, column=0)
+
         self.frm_records = customtkinter.CTkFrame(self.frm, border_color="dark_color")
         # self.frm_records.columnconfigure(0, weight=1)
         self.frm_records.grid(
@@ -56,8 +74,8 @@ class App(customtkinter.CTk):
             # columnspan=3,
         )
 
-        self.btn_someButton = customtkinter.CTkButton(self.frm_left, text="click me")
-        self.btn_someButton.grid(row=0, pady=padding, padx=padding)
+        # self.btn_someButton = customtkinter.CTkButton(self.frm_left, text="click me")
+        # self.btn_someButton.grid(row=0, pady=padding, padx=padding)
 
 
 if __name__ == "__main__":
