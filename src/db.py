@@ -4,95 +4,27 @@
 # 2. sqlite
 # 3. postgreSQL
 
-import mysql.connector
+import sqlite3
 
-mydb = mysql.connector.connect(
-    host="localhost", user="root", password="108996eE@emman", database="medicalDB"
-)
-
-myCursor = mydb.cursor()
+con = sqlite3.connect("data.db")
+cur = con.cursor()
 
 
-def showDBs():
-    myCursor.execute("SHOW DATABASES")
-    for i in myCursor:
-        print(i)
+def createTable():
+    cur.execute(
+        "CREATE TABLE patients_tbl (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, diagnosis TEXT, prescription TEXT, description TEXT);"
+    )
+    con.commit
 
 
-def createDB(databaseName):
-    myCursor.execute(f"CREATE DATABASE {databaseName}")
+def insertTo(*args):
+    cur.execute(
+        f"INSERT INTO patients_tbl(name, diagnosis, prescription, description) VALUES ({args[0]}, {args[1]}, {args[2]}, {args[3]});"
+    )
+    con.commit()
 
 
-def createTABLE(tablename, *name):
-    values = ""
-    for i in name:
-        if i == name[-1]:
-            values += f"{i}"
-            break
-        values += f"{i}, "
-    command = f"CREATE TABLE {tablename}({values})"
-    mydb.start_transaction()
-    print(command)
-    myCursor.execute(command)
-    mydb.commit()
-    mydb.close()
-
-
-def select(tablename, columns):
-    mydb.start_transaction()
-    myCursor.execute(f"SELECT {columns} FROM {tablename}")
-    myResult = myCursor.fetchall()
-    # for i in myResult:
-    #     print(i)
-
-    mydb.close()
-    return myResult
-
-
-def insert(tablename, parameters, *values):
-    columns = ""
-    data = ""
-    for i in parameters:
-        if i == parameters[-1]:
-            columns += f"{i}"
-            break
-        columns += f"{i},"
-    for x in values:
-        if type(x) is tuple:
-            if x == values[-1]:
-                data += f"{x}"
-                break
-            data += f"{x},"
-            continue
-
-        if x == values[-1]:
-            data += f"('{x}')"
-            break
-        data += f"('{x}'),"
-    print(parameters[0], columns, data)
-
-    command = f"INSERT INTO {tablename}({columns}) VALUES{data};"
-    print("HERE", command)
-    mydb.start_transaction()
-    myCursor.execute(command)
-    mydb.commit()
-    mydb.close()
-
-
-# insert(
-#     "patient_data",
-#     ("name", "diagnosis", "prescription", "description"),
-#     ("John Doe", "cancer", "chemo theraphy", "terminal stage"),
-# )
-# insert(
-#     "patient_data",
-#     ("name", "diagnosis", "prescription", "description"),
-#     ("Emily Rose", "cancer", "chemo theraphy", "terminal stage"),
-#     ("Maan Moar", "cancer", "chemo theraphy", "terminal stage"),
-#     ("Kale tens", "cancer", "chemo theraphy", "terminal stage"),
-# )
-
-
-def selectAll():
-    result = select("patient_data", "*")
-    return result
+insertTo("john", "cancer", "none", "alreadydead")
+# insertTo("John2", "cancer", "none", "already dead")
+# insertTo("John3", "cancer", "none", "already dead")
+# insertTo("John4", "cancer", "none", "already dead")

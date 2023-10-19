@@ -65,6 +65,7 @@ class App(customtkinter.CTk):
 
         self.frm_records = customtkinter.CTkFrame(self.frm, border_color="dark_color")
         # self.frm_records.columnconfigure(0, weight=1)
+
         self.frm_records.grid(
             row=0,
             column=1,
