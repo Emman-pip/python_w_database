@@ -7,13 +7,12 @@ customtkinter.set_default_color_theme("dark-blue")
 customtkinter.set_appearance_mode("dark")
 customtkinter.deactivate_automatic_dpi_awareness()
 
-padding = 10
-
 
 class App(customtkinter.CTk):
     def __init__(self):
+        padding = 10
         super().__init__()
-        # self.geometry("1000x750")
+        self.geometry("1000x270")
         self.title("Hospital Records")
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(0, weight=1)
@@ -63,8 +62,11 @@ class App(customtkinter.CTk):
         self.btn_search = customtkinter.CTkButton(self.frm_search, text="search")
         self.btn_search.grid(row=1, column=0, pady=padding / 2)
 
-        self.frm_records = customtkinter.CTkFrame(self.frm, border_color="dark_color")
-        # self.frm_records.columnconfigure(0, weight=1)
+        self.frm_records = customtkinter.CTkScrollableFrame(
+            self.frm, border_color="dark_color", height=200
+        )
+        # self.frm_records.columnconfigure(1, pad=10)
+        self.frm_records.columnconfigure((0, 1, 2, 3, 4), weight=1)
         self.frm_records.grid(
             row=0,
             column=1,
