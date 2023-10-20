@@ -12,19 +12,46 @@ cur = con.cursor()
 
 def createTable():
     cur.execute(
-        "CREATE TABLE patients_tbl (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, diagnosis TEXT, prescription TEXT, description TEXT);"
+        "CREATE TABLE patients_tbl (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, diagnosis TEXT, prescription TEXT, description TEXT);"
     )
-    con.commit
+    con.commit()
+    con.close()
 
 
 def insertTo(*args):
     cur.execute(
-        f"INSERT INTO patients_tbl(name, diagnosis, prescription, description) VALUES ({args[0]}, {args[1]}, {args[2]}, {args[3]});"
+        f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
     )
     con.commit()
 
 
-insertTo("john", "cancer", "none", "alreadydead")
+def select():
+    rows = cur.execute(
+        """
+        SELECT * FROM patients_tbl
+    """
+    )
+    return rows.fetchall()
+
+
+def update(id):
+    cur.execute(
+        f"""
+        UPDATE patients_tbl
+        SET name = "Jethie"
+        where patient_id = {id};
+    """
+    )
+    con.commit()
+
+
+# insertTo()
+
 # insertTo("John2", "cancer", "none", "already dead")
 # insertTo("John3", "cancer", "none", "already dead")
 # insertTo("John4", "cancer", "none", "already dead")
+# insertTo("john5", "cancer", "none", "alreadydead")
+
+# update(1)
+print(select())
+con.close()

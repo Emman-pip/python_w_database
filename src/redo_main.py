@@ -1,5 +1,4 @@
 import tkinter
-from typing import Optional, Tuple, Union
 import customtkinter
 import tkinter.messagebox
 
