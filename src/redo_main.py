@@ -52,7 +52,7 @@ class App(customtkinter.CTk):
         self.frm_search = customtkinter.CTkFrame(self.frm_left)
         self.frm_search.grid(row=0, padx=padding, pady=padding)
         self.btn_login = customtkinter.CTkButton(
-            self.frm_left, text="login", command=lambda: loginWindow.open(self)
+            self.frm_left, text="login", command=lambda: self.open()
         )
         self.btn_login.grid(
             row=1,
@@ -145,9 +145,11 @@ class App(customtkinter.CTk):
                 2,
             )
         except:
-            self.lbl_err = customtkinter.CTkLabel(self.frm_search, text="Invalid ID")
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_search, text="Invalid ID", text_color="red"
+            )
             self.lbl_err.grid(row=2)
-            timeout = Timer(1.0, lambda: self.lbl_err.grid_forget())
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
             timeout.start()
 
     def displayRecords(self):
@@ -167,6 +169,11 @@ class App(customtkinter.CTk):
         self.lbl_diagnosis.grid(column=2, row=row, sticky="ew", padx=padding)
         self.lbl_prescription.grid(column=3, row=row, sticky="ew", padx=padding)
         self.lbl_description.grid(column=4, row=row, sticky="ew", padx=padding)
+
+    def open(self):
+        self.destroy()
+        login = loginWindow()
+        login.mainloop()
 
 
 class loginWindow(customtkinter.CTk):
@@ -189,7 +196,9 @@ class loginWindow(customtkinter.CTk):
         )
         self.ent_password.grid(column=0, row=1)
 
-        self.btn_login = customtkinter.CTkButton(self.frm_frame, text="Login")
+        self.btn_login = customtkinter.CTkButton(
+            self.frm_frame, text="Login", command=lambda: self.credentials()
+        )
         self.btn_login.grid(column=0, row=2, pady=padding, padx=padding)
 
         self.btn_back = customtkinter.CTkButton(
@@ -197,13 +206,27 @@ class loginWindow(customtkinter.CTk):
         )
         self.btn_back.grid(column=0, row=3, pady=padding, padx=padding)
 
-    def open(self):
-        self.destroy()
-        login = loginWindow()
-        login.mainloop()
+    def credentials(self):
+        if self.ent_username.get() == "root" and self.ent_password.get() == "root":
+            self.destroy()
+            root = rootUser()
+            root.mainloop()
+        else:
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_frame, text="Invalid ID", text_color="red"
+            )
+            self.lbl_err.grid(row=4)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
 
     def back(self):
         os.execl(sys.executable, sys.executable, *sys.argv)
+
+
+class rootUser(App):
+    def __init__(self):
+        super().__init__()
+        self.btn_login.grid_forget()
 
 
 if __name__ == "__main__":
