@@ -24,12 +24,21 @@ def insertTo(*args):
     con.commit()
 
 
-def select():
-    rows = cur.execute(
+def select(id=None):
+    if id == None:
+        rows = cur.execute(
+            """
+            SELECT * FROM patients_tbl
         """
-        SELECT * FROM patients_tbl
-    """
-    )
+        )
+    else:
+        rows = cur.execute(
+            f"""
+            SELECT * 
+            FROM patients_tbl
+            WHERE patient_id = {id}
+       """
+        )
     return rows.fetchall()
 
 

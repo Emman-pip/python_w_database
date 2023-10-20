@@ -14,7 +14,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
-        self.geometry("1000x270")
+        self.geometry("1000x370")
         self.title("Hospital Records")
         self.grid_rowconfigure(0, weight=1)  # configure grid system
         self.grid_columnconfigure(0, weight=1)
@@ -63,19 +63,36 @@ class App(customtkinter.CTk):
             placeholder_text="Enter Patient ID",
         )
         self.ent_search.grid(row=0, column=0)
-        self.btn_search = customtkinter.CTkButton(self.frm_search, text="search")
+        self.btn_search = customtkinter.CTkButton(
+            self.frm_search,
+            text="search",
+            command=lambda: self.searchFunc(self.ent_search.get()),
+        )
         self.btn_search.grid(row=1, column=0, pady=padding / 2)
 
+        self.frm_right_part = customtkinter.CTkFrame(self.frm)
+        self.frm_right_part.grid(
+            row=0,
+            column=1,
+            padx=padding,
+            pady=padding,
+            sticky="nsew",
+            # columnspan=3,
+        )
+        self.frm_right_part.columnconfigure(0, weight=1)
+        self.frm_right_part.rowconfigure(0, weight=1)
+        # self.frm_right_part.rowconfigure(1, weight=3)
+
         self.frm_records = customtkinter.CTkScrollableFrame(
-            self.frm, border_color="dark_color", height=200
+            self.frm_right_part, border_color="dark_color", height=200
         )
         # self.frm_records.columnconfigure(1, pad=10)
         self.frm_records.columnconfigure((0, 1, 2, 3, 4), weight=1)
         self.frm_records.grid(
             row=0,
-            column=1,
-            padx=padding,
-            pady=padding,
+            column=0,
+            padx=padding / 2,
+            pady=padding / 2,
             sticky="nsew",
             # columnspan=3,
         )
@@ -87,6 +104,42 @@ class App(customtkinter.CTk):
         )
 
         self.displayRecords()
+
+    def searchFunc(self, id):
+        padding = 10
+        result = select(id)
+        print(result)
+
+        self.frm_display_result = customtkinter.CTkFrame(
+            self.frm_right_part,
+        )
+        self.frm_display_result.grid(row=1, column=0, sticky="new", padx=padding / 2)
+        self.frm_display_result.columnconfigure((0, 1, 2, 3, 4), weight=1)
+
+        self.lbl_result_text = customtkinter.CTkLabel(
+            self.frm_display_result,
+            text=f"Result for patientID#{self.ent_search.get()}:",
+        )
+        self.lbl_result_text.grid(pady=padding / 2, row=0)
+        self.records(
+            self.frm_display_result,
+            "ID",
+            "name",
+            "diagnosis",
+            "prescription",
+            "description",
+            1,
+        )
+
+        self.records(
+            self.frm_display_result,
+            result[0][0],
+            result[0][1],
+            result[0][2],
+            result[0][3],
+            result[0][4],
+            2,
+        )
 
     def displayRecords(self):
         for i in select():
