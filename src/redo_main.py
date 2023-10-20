@@ -4,6 +4,7 @@ import tkinter.messagebox
 from db import *
 import os
 import sys
+from threading import Timer
 
 customtkinter.set_default_color_theme("green")
 customtkinter.set_appearance_mode("dark")
@@ -106,40 +107,48 @@ class App(customtkinter.CTk):
         self.displayRecords()
 
     def searchFunc(self, id):
-        padding = 10
-        result = select(id)
-        print(result)
+        try:
+            padding = 10
+            result = select(id)
+            # print(result)
 
-        self.frm_display_result = customtkinter.CTkFrame(
-            self.frm_right_part,
-        )
-        self.frm_display_result.grid(row=1, column=0, sticky="new", padx=padding / 2)
-        self.frm_display_result.columnconfigure((0, 1, 2, 3, 4), weight=1)
+            self.frm_display_result = customtkinter.CTkFrame(
+                self.frm_right_part,
+            )
+            self.frm_display_result.grid(
+                row=1, column=0, sticky="new", padx=padding / 2, pady=padding / 2
+            )
+            self.frm_display_result.columnconfigure((0, 1, 2, 3, 4), weight=1)
 
-        self.lbl_result_text = customtkinter.CTkLabel(
-            self.frm_display_result,
-            text=f"Result for patientID#{self.ent_search.get()}:",
-        )
-        self.lbl_result_text.grid(pady=padding / 2, row=0)
-        self.records(
-            self.frm_display_result,
-            "ID",
-            "name",
-            "diagnosis",
-            "prescription",
-            "description",
-            1,
-        )
+            self.lbl_result_text = customtkinter.CTkLabel(
+                self.frm_display_result,
+                text=f"Result for patientID#{self.ent_search.get()}:",
+            )
+            self.lbl_result_text.grid(pady=padding / 2, row=0)
+            self.records(
+                self.frm_display_result,
+                "ID",
+                "name",
+                "diagnosis",
+                "prescription",
+                "description",
+                1,
+            )
 
-        self.records(
-            self.frm_display_result,
-            result[0][0],
-            result[0][1],
-            result[0][2],
-            result[0][3],
-            result[0][4],
-            2,
-        )
+            self.records(
+                self.frm_display_result,
+                result[0][0],
+                result[0][1],
+                result[0][2],
+                result[0][3],
+                result[0][4],
+                2,
+            )
+        except:
+            self.lbl_err = customtkinter.CTkLabel(self.frm_search, text="Invalid ID")
+            self.lbl_err.grid(row=2)
+            timeout = Timer(1.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
 
     def displayRecords(self):
         for i in select():
