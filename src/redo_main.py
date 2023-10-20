@@ -2,6 +2,8 @@ import tkinter
 import customtkinter
 import tkinter.messagebox
 from db import *
+import os
+import sys
 
 customtkinter.set_default_color_theme("green")
 customtkinter.set_appearance_mode("dark")
@@ -48,7 +50,9 @@ class App(customtkinter.CTk):
 
         self.frm_search = customtkinter.CTkFrame(self.frm_left)
         self.frm_search.grid(row=0, padx=padding, pady=padding)
-        self.btn_login = customtkinter.CTkButton(self.frm_left, text="login")
+        self.btn_login = customtkinter.CTkButton(
+            self.frm_left, text="login", command=lambda: loginWindow.open(self)
+        )
         self.btn_login.grid(
             row=1,
             pady=padding,
@@ -101,6 +105,43 @@ class App(customtkinter.CTk):
         self.lbl_diagnosis.grid(column=2, row=row, sticky="ew", padx=padding)
         self.lbl_prescription.grid(column=3, row=row, sticky="ew", padx=padding)
         self.lbl_description.grid(column=4, row=row, sticky="ew", padx=padding)
+
+
+class loginWindow(customtkinter.CTk):
+    def __init__(self):
+        padding = 10
+        padding2 = 5
+        super().__init__()
+        # self.geometry("1000x750")
+        self.title("Login")
+        self.frm_frame = customtkinter.CTkFrame(self)
+        self.frm_frame.grid(sticky="nsew", padx=padding, pady=padding2)
+        self.columnconfigure(0, weight=1)
+        self.ent_username = customtkinter.CTkEntry(
+            self.frm_frame, placeholder_text="Username"
+        )
+        self.ent_username.grid(column=0, row=0, pady=padding, padx=padding2)
+
+        self.ent_password = customtkinter.CTkEntry(
+            self.frm_frame, placeholder_text="Password"
+        )
+        self.ent_password.grid(column=0, row=1)
+
+        self.btn_login = customtkinter.CTkButton(self.frm_frame, text="Login")
+        self.btn_login.grid(column=0, row=2, pady=padding, padx=padding)
+
+        self.btn_back = customtkinter.CTkButton(
+            self.frm_frame, text="Back", command=lambda: self.back()
+        )
+        self.btn_back.grid(column=0, row=3, pady=padding, padx=padding)
+
+    def open(self):
+        self.destroy()
+        login = loginWindow()
+        login.mainloop()
+
+    def back(self):
+        os.execl(sys.executable, sys.executable, *sys.argv)
 
 
 if __name__ == "__main__":
