@@ -15,7 +15,6 @@ def createTable():
         "CREATE TABLE patients_tbl (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, diagnosis TEXT, prescription TEXT, description TEXT);"
     )
     con.commit()
-    con.close()
 
 
 def insertTo(*args):
@@ -53,5 +52,5 @@ def update(id):
 # insertTo("john5", "cancer", "none", "alreadydead")
 
 # update(1)
-print(select())
-con.close()
+# print(select())
+# con.close()

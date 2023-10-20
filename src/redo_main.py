@@ -1,8 +1,9 @@
 import tkinter
 import customtkinter
 import tkinter.messagebox
+from db import *
 
-customtkinter.set_default_color_theme("dark-blue")
+customtkinter.set_default_color_theme("green")
 customtkinter.set_appearance_mode("dark")
 customtkinter.deactivate_automatic_dpi_awareness()
 
@@ -80,15 +81,12 @@ class App(customtkinter.CTk):
         self.records(
             self.frm_records, "ID", "name", "diagnosis", "prescription", "description"
         )
-        self.records(self.frm_records, 1, "John", "dead", "dead", "dead", 1)
-        self.records(self.frm_records, 2, "Emman", "dead", "dead", "dead", 2)
-        self.records(self.frm_records, 3, "Emman", "dead", "dead", "dead", 3)
-        self.records(self.frm_records, 4, "Emman", "dead", "dead", "dead", 4)
-        self.records(self.frm_records, 5, "Emman", "dead", "dead", "dead", 5)
-        self.records(self.frm_records, 6, "Emman", "dead", "dead", "dead", 6)
-        self.records(self.frm_records, 7, "Emman", "dead", "dead", "dead", 7)
-        self.records(self.frm_records, 8, "Emman", "dead", "dead", "dead", 8)
-        self.records(self.frm_records, 9, "Emman", "dead", "dead", "dead", 9)
+
+        self.displayRecords()
+
+    def displayRecords(self):
+        for i in select():
+            self.records(self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0])
 
     def records(self, master, id, name, diagnosis, prescription, description, row=0):
         padding = 20
