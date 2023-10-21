@@ -209,7 +209,7 @@ class loginWindow(customtkinter.CTk):
     def credentials(self):
         if self.ent_username.get() == "root" and self.ent_password.get() == "root":
             self.destroy()
-            root = rootUser()
+            root = RootUser()
             root.mainloop()
         else:
             self.lbl_err = customtkinter.CTkLabel(
@@ -223,12 +223,100 @@ class loginWindow(customtkinter.CTk):
         os.execl(sys.executable, sys.executable, *sys.argv)
 
 
-class rootUser(App):
+class RootUser(App):
     def __init__(self):
+        padding = 10
         super().__init__()
         self.btn_login.grid_forget()
+        self.frm_other_buttons = customtkinter.CTkFrame(self.frm_left)
+        self.frm_other_buttons.grid(row=1)
+        self.btn_insert = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="Insert",
+            command=lambda: self.openInsert(),
+        )
+        self.btn_insert.grid(row=0, pady=padding / 4)
+        self.btn_refresh = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="Refresh records",
+            command=lambda: self.displayRecords(),
+        )
+        self.btn_refresh.grid(row=1, pady=padding / 4)
+
+    def openInsert(self):
+        newWindow = InsertWindow()
+        newWindow.mainloop()
+
+
+class InsertWindow(customtkinter.CTk):
+    def __init__(self):
+        padding = 10
+        super().__init__()
+        self.title("add records")
+
+        self.columnconfigure(0, weight=1)
+        self.frm_main = customtkinter.CTkFrame(self)
+        self.frm_main.grid(row=0, column=0, padx=padding, pady=padding)
+        self.lbl_name = customtkinter.CTkLabel(self.frm_main, text="Name: ")
+        self.ent_name = customtkinter.CTkEntry(self.frm_main)
+        self.lbl_diagnosis = customtkinter.CTkLabel(self.frm_main, text="Diagnosis: ")
+        self.ent_diagnosis = customtkinter.CTkEntry(self.frm_main)
+        self.lbl_prescription = customtkinter.CTkLabel(
+            self.frm_main, text="Prescription: "
+        )
+        self.ent_prescription = customtkinter.CTkEntry(self.frm_main)
+        self.lbl_description = customtkinter.CTkLabel(
+            self.frm_main, text="Description: "
+        )
+        self.ent_description = customtkinter.CTkEntry(self.frm_main)
+        self.lbl_name.grid(row=0, column=0, pady=padding / 4, sticky="w")
+        self.lbl_diagnosis.grid(row=1, column=0, pady=padding / 4, sticky="w")
+        self.lbl_prescription.grid(row=2, column=0, pady=padding / 4, sticky="w")
+        self.lbl_description.grid(row=3, column=0, pady=padding / 4, sticky="w")
+        self.ent_name.grid(row=0, column=1, pady=padding / 4)
+        self.ent_diagnosis.grid(row=1, column=1, pady=padding / 4)
+        self.ent_prescription.grid(row=2, column=1, pady=padding / 4)
+        self.ent_description.grid(row=3, column=1, pady=padding / 4)
+        self.btn_add = customtkinter.CTkButton(
+            self.frm_main, text="add record", command=lambda: self.add()
+        )
+        self.btn_add.grid(row=4, pady=padding / 2, columnspan=2)
+
+        self.btn_done = customtkinter.CTkButton(
+            self.frm_main, text="done", command=lambda: self.destroy()
+        )
+        self.btn_done.grid(row=10, pady=padding / 2, columnspan=2)
+
+    def add(self):
+        try:
+            if self.ent_name.get() == "":
+                raise ValueError("value cannot be black")
+            insertTo(
+                self.ent_name.get(),
+                self.ent_diagnosis.get(),
+                self.ent_prescription.get(),
+                self.ent_description.get(),
+            )
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_main, text="SUCCESS", text_color="green"
+            )
+            self.lbl_err.grid(row=5, columnspan=2)
+            self.ent_name.delete("0", "end")
+            self.ent_diagnosis.delete("0", "end")
+            self.ent_prescription.delete("0", "end")
+            self.ent_description.delete("0", "end")
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
+        except:
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_main, text="ERROR", text_color="red"
+            )
+            self.lbl_err.grid(row=5, columnspan=2)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
 
 
 if __name__ == "__main__":
-    app = App()
+    # app = RootUser()
+    app = RootUser()
     app.mainloop()
