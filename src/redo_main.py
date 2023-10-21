@@ -2,11 +2,9 @@ import tkinter
 import customtkinter
 import tkinter.messagebox
 from db import *
-import os
-import sys
 from threading import Timer
 
-customtkinter.set_default_color_theme("green")
+customtkinter.set_default_color_theme("dark-blue")
 customtkinter.set_appearance_mode("dark")
 customtkinter.deactivate_automatic_dpi_awareness()
 
@@ -146,7 +144,7 @@ class App(customtkinter.CTk):
             )
         except:
             self.lbl_err = customtkinter.CTkLabel(
-                self.frm_search, text="Invalid ID/PASS", text_color="red"
+                self.frm_search, text="Invalid ID", text_color="red"
             )
             self.lbl_err.grid(row=2)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
@@ -213,14 +211,16 @@ class loginWindow(customtkinter.CTk):
             root.mainloop()
         else:
             self.lbl_err = customtkinter.CTkLabel(
-                self.frm_frame, text="Invalid ID", text_color="red"
+                self.frm_frame, text="Invalid ID/PASS", text_color="red"
             )
             self.lbl_err.grid(row=4)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
             timeout.start()
 
     def back(self):
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        self.destroy()
+        app = App()
+        app.mainloop()
 
 
 class RootUser(App):
@@ -251,12 +251,19 @@ class RootUser(App):
         )
         self.btn_update.grid(row=2, pady=padding / 4)
 
+        self.btn_logout = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="logout",
+            command=lambda: self.openMain(),
+        )
+        self.btn_logout.grid(row=3, pady=padding / 4)
+
         self.btn_refresh = customtkinter.CTkButton(
             self.frm_other_buttons,
             text="Refresh records",
             command=lambda: self.deleteWidgets(),
         )
-        self.btn_refresh.grid(row=3, pady=padding / 4)
+        self.btn_refresh.grid(row=4, pady=padding / 4)
 
     def deleteWidgets(self):
         for i in self.frm_records.winfo_children():
@@ -274,6 +281,11 @@ class RootUser(App):
     def openUpdate(self):
         delete = UpdateWindow()
         delete.mainloop()
+
+    def openMain(self):
+        self.destroy()
+        app = App()
+        app.mainloop()
 
 
 class InsertWindow(customtkinter.CTk):
@@ -333,7 +345,7 @@ class InsertWindow(customtkinter.CTk):
             self.ent_diagnosis.delete("0", "end")
             self.ent_prescription.delete("0", "end")
             self.ent_description.delete("0", "end")
-            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout = Timer(1.0, lambda: self.lbl_err.grid_forget())
             timeout.start()
         except:
             self.lbl_err = customtkinter.CTkLabel(
@@ -486,5 +498,4 @@ class UpdateWindow(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = App()
-    # app = UpdateWindow()
     app.mainloop()

@@ -46,7 +46,7 @@ def update(id, name, diagnosis, prescription, description):
     cur.execute(
         f"""
         UPDATE patients_tbl
-        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{prescription}'
+        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{description}'
         where patient_id = {id};
     """
     )
@@ -61,17 +61,3 @@ def deleteWithID(id):
     """
     )
     con.commit()
-
-
-# insertTo()
-
-# update(2, "haha", "cancer", "none", "dead")
-
-# insertTo("John2", "cancer", "none", "already dead")
-# insertTo("John3", "cancer", "none", "already dead")
-# insertTo("John4", "cancer", "none", "already dead")
-# insertTo("john5", "cancer", "none", "alreadydead")
-
-# update(1)
-# print(select())
-# con.close()
