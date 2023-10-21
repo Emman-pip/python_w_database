@@ -61,17 +61,3 @@ def deleteWithID(id):
     """
     )
     con.commit()
-
-
-# insertTo()
-
-# update(2, "haha", "cancer", "none", "dead")
-
-# insertTo("John2", "cancer", "none", "already dead")
-# insertTo("John3", "cancer", "none", "already dead")
-# insertTo("John4", "cancer", "none", "already dead")
-# insertTo("john5", "cancer", "none", "alreadydead")
-
-# update(1)
-# print(select())
-# con.close()

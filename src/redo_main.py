@@ -6,7 +6,7 @@ import os
 import sys
 from threading import Timer
 
-customtkinter.set_default_color_theme("green")
+customtkinter.set_default_color_theme("dark-blue")
 customtkinter.set_appearance_mode("dark")
 customtkinter.deactivate_automatic_dpi_awareness()
 
@@ -345,7 +345,7 @@ class InsertWindow(customtkinter.CTk):
             self.ent_diagnosis.delete("0", "end")
             self.ent_prescription.delete("0", "end")
             self.ent_description.delete("0", "end")
-            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout = Timer(1.0, lambda: self.lbl_err.grid_forget())
             timeout.start()
         except:
             self.lbl_err = customtkinter.CTkLabel(
@@ -498,5 +498,4 @@ class UpdateWindow(customtkinter.CTk):
 
 if __name__ == "__main__":
     app = App()
-    # app = UpdateWindow()
     app.mainloop()
