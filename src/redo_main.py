@@ -96,12 +96,6 @@ class App(customtkinter.CTk):
             # columnspan=3,
         )
 
-        # self.btn_someButton = customtkinter.CTkButton(self.frm_left, text="click me")
-        # self.btn_someButton.grid(row=0, pady=padding, padx=padding)
-        self.records(
-            self.frm_records, "ID", "name", "diagnosis", "prescription", "description"
-        )
-
         self.displayRecords()
 
     def searchFunc(self, id):
@@ -151,6 +145,15 @@ class App(customtkinter.CTk):
             timeout.start()
 
     def displayRecords(self):
+        self.records(
+                self.frm_records,
+                "ID",
+                "name",
+                "diagnosis",
+                "prescription",
+                "description",
+                1,
+            )
         for i in select():
             self.records(self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0])
 
@@ -179,9 +182,12 @@ class loginWindow(customtkinter.CTk):
         padding = 10
         padding2 = 5
         super().__init__()
+        self.columnconfigure(0, weight=1)
         # self.geometry("1000x750")
         self.title("Login")
         self.frm_frame = customtkinter.CTkFrame(self)
+        self.frm_frame.columnconfigure(0, weight=1)
+
         self.frm_frame.grid(sticky="nsew", padx=padding, pady=padding2)
         self.columnconfigure(0, weight=1)
         self.ent_username = customtkinter.CTkEntry(
@@ -268,6 +274,15 @@ class RootUser(App):
     def deleteWidgets(self):
         for i in self.frm_records.winfo_children():
             i.destroy()
+        # self.records(
+        #         self.frm_display_result,
+        #         "ID",
+        #         "name",
+        #         "diagnosis",
+        #         "prescription",
+        #         "description",
+        #         1,
+        #     )
         self.displayRecords()
 
     def openInsert(self):
@@ -293,10 +308,11 @@ class InsertWindow(customtkinter.CTk):
         padding = 10
         super().__init__()
         self.title("add records")
+        self.resizable(0, 0)
 
         self.columnconfigure(0, weight=1)
         self.frm_main = customtkinter.CTkFrame(self)
-        self.frm_main.grid(row=0, column=0, padx=padding, pady=padding)
+        self.frm_main.grid(row=0, column=0, padx=padding, pady=padding, sticky="nsew")
         self.lbl_name = customtkinter.CTkLabel(self.frm_main, text="Name: ")
         self.ent_name = customtkinter.CTkEntry(self.frm_main)
         self.lbl_diagnosis = customtkinter.CTkLabel(self.frm_main, text="Diagnosis: ")
@@ -304,6 +320,8 @@ class InsertWindow(customtkinter.CTk):
         self.lbl_prescription = customtkinter.CTkLabel(
             self.frm_main, text="Prescription: "
         )
+        self.frm_main.columnconfigure(0, weight=0)
+        self.frm_main.columnconfigure(1, weight=1)
         self.ent_prescription = customtkinter.CTkEntry(self.frm_main)
         self.lbl_description = customtkinter.CTkLabel(
             self.frm_main, text="Description: "
@@ -360,7 +378,7 @@ class DeleteWindow(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
-
+        self.resizable(0,0)
         self.title("delete records")
         self.frm_main = customtkinter.CTkFrame(self)
         self.frm_main.grid(row=0, column=0, pady=padding, padx=padding)
@@ -398,6 +416,7 @@ class DeleteWindow(customtkinter.CTk):
 class UpdateWindow(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        self.resizable(0,0)
         self.title("update records")
         self.columnconfigure(0, weight=1)
         padding = 10
