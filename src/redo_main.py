@@ -232,20 +232,32 @@ class RootUser(App):
         self.frm_other_buttons.grid(row=1)
         self.btn_insert = customtkinter.CTkButton(
             self.frm_other_buttons,
-            text="Insert",
+            text="Add records",
             command=lambda: self.openInsert(),
         )
         self.btn_insert.grid(row=0, pady=padding / 4)
+
+        self.btn_delete = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="Delete records",
+            command=lambda: self.openDelete(),
+        )
+        self.btn_delete.grid(row=1, pady=padding / 4)
+
         self.btn_refresh = customtkinter.CTkButton(
             self.frm_other_buttons,
             text="Refresh records",
             command=lambda: self.displayRecords(),
         )
-        self.btn_refresh.grid(row=1, pady=padding / 4)
+        self.btn_refresh.grid(row=3, pady=padding / 4)
 
     def openInsert(self):
         newWindow = InsertWindow()
         newWindow.mainloop()
+
+    def openDelete(self):
+        delete = DeleteWindow()
+        delete.mainloop()
 
 
 class InsertWindow(customtkinter.CTk):
@@ -314,6 +326,21 @@ class InsertWindow(customtkinter.CTk):
             self.lbl_err.grid(row=5, columnspan=2)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
             timeout.start()
+
+
+class DeleteWindow(customtkinter.CTk):
+    def __init__(self):
+        padding = 10
+        super().__init__()
+        self.title("delete records")
+        self.frm_main = customtkinter.CTkFrame(self)
+        self.frm_main.grid(row=0, column=0, pady=padding, padx=padding)
+        self.lbl_label = customtkinter.CTkLabel(self.frm_main, text="Enter patient ID:")
+        self.lbl_label.grid(row=0, padx=padding / 4, pady=padding / 4)
+        self.ent_id = customtkinter.CTkEntry(self.frm_main)
+        self.ent_id.grid(row=1, padx=padding / 4, pady=padding / 4)
+        self.btn_delete = customtkinter.CTkButton(self.frm_main, text="Delete record")
+        self.btn_delete.grid(row=2, padx=padding / 4, pady=padding / 4)
 
 
 if __name__ == "__main__":
