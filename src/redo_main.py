@@ -2,8 +2,6 @@ import tkinter
 import customtkinter
 import tkinter.messagebox
 from db import *
-import os
-import sys
 from threading import Timer
 
 customtkinter.set_default_color_theme("dark-blue")
@@ -220,7 +218,9 @@ class loginWindow(customtkinter.CTk):
             timeout.start()
 
     def back(self):
-        os.execl(sys.executable, sys.executable, *sys.argv)
+        self.destroy()
+        app = App()
+        app.mainloop()
 
 
 class RootUser(App):
