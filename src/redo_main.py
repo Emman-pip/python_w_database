@@ -247,9 +247,14 @@ class RootUser(App):
         self.btn_refresh = customtkinter.CTkButton(
             self.frm_other_buttons,
             text="Refresh records",
-            command=lambda: self.displayRecords(),
+            command=lambda: self.deleteWidgets(),
         )
         self.btn_refresh.grid(row=3, pady=padding / 4)
+
+    def deleteWidgets(self):
+        for i in self.frm_records.winfo_children():
+            i.destroy()
+        self.displayRecords()
 
     def openInsert(self):
         newWindow = InsertWindow()
@@ -332,6 +337,7 @@ class DeleteWindow(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
+
         self.title("delete records")
         self.frm_main = customtkinter.CTkFrame(self)
         self.frm_main.grid(row=0, column=0, pady=padding, padx=padding)
@@ -339,8 +345,31 @@ class DeleteWindow(customtkinter.CTk):
         self.lbl_label.grid(row=0, padx=padding / 4, pady=padding / 4)
         self.ent_id = customtkinter.CTkEntry(self.frm_main)
         self.ent_id.grid(row=1, padx=padding / 4, pady=padding / 4)
-        self.btn_delete = customtkinter.CTkButton(self.frm_main, text="Delete record")
+        self.btn_delete = customtkinter.CTkButton(
+            self.frm_main,
+            text="Delete record",
+            command=lambda: self.deleteAction(self.ent_id.get()),
+        )
         self.btn_delete.grid(row=2, padx=padding / 4, pady=padding / 4)
+
+    def deleteAction(self, id):
+        try:
+            if select(id) == []:
+                raise ValueError("Out of Index")
+            deleteWithID(id)
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_main, text="RECORD DELETED", text_color="green"
+            )
+            self.lbl_err.grid(row=5)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
+        except:
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_main, text="ERROR", text_color="red"
+            )
+            self.lbl_err.grid(row=5)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
 
 
 if __name__ == "__main__":

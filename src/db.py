@@ -53,6 +53,16 @@ def update(id):
     con.commit()
 
 
+def deleteWithID(id):
+    cur.execute(
+        f"""
+        DELETE FROM patients_tbl
+        where patient_id = {id}
+    """
+    )
+    con.commit()
+
+
 # insertTo()
 
 # insertTo("John2", "cancer", "none", "already dead")
