@@ -42,11 +42,11 @@ def select(id=None):
     return rows.fetchall()
 
 
-def update(id):
+def update(id, name, diagnosis, prescription, description):
     cur.execute(
         f"""
         UPDATE patients_tbl
-        SET name = "Jethie"
+        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{prescription}'
         where patient_id = {id};
     """
     )
@@ -64,6 +64,8 @@ def deleteWithID(id):
 
 
 # insertTo()
+
+# update(2, "haha", "cancer", "none", "dead")
 
 # insertTo("John2", "cancer", "none", "already dead")
 # insertTo("John3", "cancer", "none", "already dead")

@@ -146,7 +146,7 @@ class App(customtkinter.CTk):
             )
         except:
             self.lbl_err = customtkinter.CTkLabel(
-                self.frm_search, text="Invalid ID", text_color="red"
+                self.frm_search, text="Invalid ID/PASS", text_color="red"
             )
             self.lbl_err.grid(row=2)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
@@ -244,6 +244,13 @@ class RootUser(App):
         )
         self.btn_delete.grid(row=1, pady=padding / 4)
 
+        self.btn_update = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="Update records",
+            command=lambda: self.openUpdate(),
+        )
+        self.btn_update.grid(row=2, pady=padding / 4)
+
         self.btn_refresh = customtkinter.CTkButton(
             self.frm_other_buttons,
             text="Refresh records",
@@ -262,6 +269,10 @@ class RootUser(App):
 
     def openDelete(self):
         delete = DeleteWindow()
+        delete.mainloop()
+
+    def openUpdate(self):
+        delete = UpdateWindow()
         delete.mainloop()
 
 
@@ -372,7 +383,108 @@ class DeleteWindow(customtkinter.CTk):
             timeout.start()
 
 
+class UpdateWindow(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        self.title("update records")
+        self.columnconfigure(0, weight=1)
+        padding = 10
+        self.frm_main = customtkinter.CTkFrame(self)
+        self.frm_main.columnconfigure(0, weight=1)
+
+        self.frm_main.grid(row=0, column=0, padx=padding, pady=padding, sticky="nsew")
+        self.ent_id = customtkinter.CTkEntry(
+            self.frm_main, placeholder_text="Enter patient ID"
+        )
+        self.ent_id.grid(row=1, columnspan=2, pady=padding, sticky="ew")
+        self.btn_id = customtkinter.CTkButton(
+            self.frm_main,
+            text="See current record with the ID#",
+            command=lambda: self.chooseIdToDisplay(self.ent_id.get()),
+        )
+        self.btn_id.grid(row=2, columnspan=2, pady=padding, sticky="ew")
+
+        self.frm_entries = customtkinter.CTkFrame(self)
+        self.frm_entries.grid(row=1, column=0, padx=padding, pady=padding, columnspan=2)
+
+    def chooseIdToDisplay(self, id):
+        padding = 10
+        try:
+            result = select(id)
+            if result == []:
+                raise ValueError("out of range")
+        except:
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_entries, text="ERROR", text_color="red"
+            )
+            self.lbl_err.grid(row=5, columnspan=2)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
+
+        self.lbl_name = customtkinter.CTkLabel(self.frm_entries, text="Name:")
+        self.ent_name = customtkinter.CTkEntry(self.frm_entries)
+        self.ent_name.insert("1", result[0][1])
+
+        self.lbl_diagnosis = customtkinter.CTkLabel(self.frm_entries, text="Diagnosis:")
+        self.ent_diagnosis = customtkinter.CTkEntry(self.frm_entries)
+        self.ent_diagnosis.insert("1", result[0][2])
+
+        self.lbl_prescription = customtkinter.CTkLabel(
+            self.frm_entries, text="Prescription:"
+        )
+        self.ent_prescription = customtkinter.CTkEntry(self.frm_entries)
+        self.ent_prescription.insert("1", result[0][3])
+
+        self.lbl_description = customtkinter.CTkLabel(
+            self.frm_entries, text="Description:"
+        )
+        self.ent_description = customtkinter.CTkEntry(self.frm_entries)
+        self.ent_description.insert("1", result[0][4])
+
+        self.lbl_name.grid(row=0, column=0, sticky="w")
+        self.ent_name.grid(row=0, column=1, padx=padding / 4, pady=padding / 4)
+
+        self.lbl_diagnosis.grid(row=1, column=0, sticky="w")
+        self.ent_diagnosis.grid(row=1, column=1, padx=padding / 4, pady=padding / 4)
+
+        self.lbl_prescription.grid(row=2, column=0, sticky="w")
+        self.ent_prescription.grid(row=2, column=1, padx=padding / 4, pady=padding / 4)
+
+        self.lbl_description.grid(row=3, column=0, sticky="w")
+        self.ent_description.grid(row=3, column=1, padx=padding / 4, pady=padding / 4)
+
+        self.btn_update = customtkinter.CTkButton(
+            self.frm_entries,
+            text="update",
+            command=lambda: self.updateAction(),
+        )
+        self.btn_update.grid(row=4, columnspan=2)
+
+    def updateAction(self):
+        try:
+            update(
+                self.ent_id.get(),
+                self.ent_name.get(),
+                self.ent_diagnosis.get(),
+                self.ent_prescription.get(),
+                self.ent_description.get(),
+            )
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_entries, text="RECORD UPDATED", text_color="green"
+            )
+            self.lbl_err.grid(row=5, columnspan=2)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
+        except:
+            self.lbl_err = customtkinter.CTkLabel(
+                self.frm_entries, text="ERROR", text_color="red"
+            )
+            self.lbl_err.grid(row=5, columnspan=2)
+            timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
+            timeout.start()
+
+
 if __name__ == "__main__":
-    # app = RootUser()
-    app = RootUser()
+    app = App()
+    # app = UpdateWindow()
     app.mainloop()
