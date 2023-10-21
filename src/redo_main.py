@@ -251,12 +251,19 @@ class RootUser(App):
         )
         self.btn_update.grid(row=2, pady=padding / 4)
 
+        self.btn_logout = customtkinter.CTkButton(
+            self.frm_other_buttons,
+            text="logout",
+            command=lambda: self.openMain(),
+        )
+        self.btn_logout.grid(row=3, pady=padding / 4)
+
         self.btn_refresh = customtkinter.CTkButton(
             self.frm_other_buttons,
             text="Refresh records",
             command=lambda: self.deleteWidgets(),
         )
-        self.btn_refresh.grid(row=3, pady=padding / 4)
+        self.btn_refresh.grid(row=4, pady=padding / 4)
 
     def deleteWidgets(self):
         for i in self.frm_records.winfo_children():
@@ -274,6 +281,11 @@ class RootUser(App):
     def openUpdate(self):
         delete = UpdateWindow()
         delete.mainloop()
+
+    def openMain(self):
+        self.destroy()
+        app = App()
+        app.mainloop()
 
 
 class InsertWindow(customtkinter.CTk):

@@ -46,7 +46,7 @@ def update(id, name, diagnosis, prescription, description):
     cur.execute(
         f"""
         UPDATE patients_tbl
-        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{prescription}'
+        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{description}'
         where patient_id = {id};
     """
     )
