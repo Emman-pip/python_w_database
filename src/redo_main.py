@@ -145,31 +145,65 @@ class App(customtkinter.CTk):
             timeout.start()
 
     def displayRecords(self):
+        blue = "#838383"
+        blueish = "#aaaaaa"
+        whitish = "#d4d4d4"
         self.records(
-                self.frm_records,
-                "ID",
-                "name",
-                "diagnosis",
-                "prescription",
-                "description",
-                1,
-            )
+            self.frm_records,
+            "ID",
+            "name",
+            "diagnosis",
+            "prescription",
+            "description",
+            1,
+            blue,
+        )
+        x = 0
         for i in select():
-            self.records(self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0])
+            if x % 2 == 1:
+                self.records(
+                    self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0], blueish
+                )
+            else:
+                self.records(
+                    self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0], whitish
+                )
+            x += 1
 
-    def records(self, master, id, name, diagnosis, prescription, description, row=0):
+    def records(
+        self,
+        master,
+        id,
+        name,
+        diagnosis,
+        prescription,
+        description,
+        row=0,
+        bg="transparent",
+    ):
+        textColor = "black"
         padding = 20
-        self.lbl_id = customtkinter.CTkLabel(master, text=id)
-        self.lbl_name = customtkinter.CTkLabel(master, text=name)
-        self.lbl_diagnosis = customtkinter.CTkLabel(master, text=diagnosis)
-        self.lbl_prescription = customtkinter.CTkLabel(master, text=prescription)
-        self.lbl_description = customtkinter.CTkLabel(master, text=description)
+        self.lbl_id = customtkinter.CTkLabel(
+            master, text=id, bg_color=bg, text_color=textColor
+        )
+        self.lbl_name = customtkinter.CTkLabel(
+            master, text=name, bg_color=bg, text_color=textColor
+        )
+        self.lbl_diagnosis = customtkinter.CTkLabel(
+            master, text=diagnosis, bg_color=bg, text_color=textColor
+        )
+        self.lbl_prescription = customtkinter.CTkLabel(
+            master, text=prescription, bg_color=bg, text_color=textColor
+        )
+        self.lbl_description = customtkinter.CTkLabel(
+            master, text=description, bg_color=bg, text_color=textColor
+        )
         # to be appplied with grid
-        self.lbl_id.grid(column=0, row=row, sticky="ew", padx=padding)
-        self.lbl_name.grid(column=1, row=row, sticky="ew", padx=padding)
-        self.lbl_diagnosis.grid(column=2, row=row, sticky="ew", padx=padding)
-        self.lbl_prescription.grid(column=3, row=row, sticky="ew", padx=padding)
-        self.lbl_description.grid(column=4, row=row, sticky="ew", padx=padding)
+        self.lbl_id.grid(column=0, row=row, sticky="ew")
+        self.lbl_name.grid(column=1, row=row, sticky="ew")
+        self.lbl_diagnosis.grid(column=2, row=row, sticky="ew")
+        self.lbl_prescription.grid(column=3, row=row, sticky="ew")
+        self.lbl_description.grid(column=4, row=row, sticky="ew")
 
     def open(self):
         self.destroy()
@@ -378,7 +412,7 @@ class DeleteWindow(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
-        self.resizable(0,0)
+        self.resizable(0, 0)
         self.title("delete records")
         self.frm_main = customtkinter.CTkFrame(self)
         self.frm_main.grid(row=0, column=0, pady=padding, padx=padding)
@@ -416,7 +450,7 @@ class DeleteWindow(customtkinter.CTk):
 class UpdateWindow(customtkinter.CTk):
     def __init__(self):
         super().__init__()
-        self.resizable(0,0)
+        self.resizable(0, 0)
         self.title("update records")
         self.columnconfigure(0, weight=1)
         padding = 10
