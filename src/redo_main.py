@@ -146,7 +146,7 @@ class App(customtkinter.CTk):
             )
         except:
             self.lbl_err = customtkinter.CTkLabel(
-                self.frm_search, text="Invalid ID/PASS", text_color="red"
+                self.frm_search, text="Invalid ID", text_color="red"
             )
             self.lbl_err.grid(row=2)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
@@ -213,7 +213,7 @@ class loginWindow(customtkinter.CTk):
             root.mainloop()
         else:
             self.lbl_err = customtkinter.CTkLabel(
-                self.frm_frame, text="Invalid ID", text_color="red"
+                self.frm_frame, text="Invalid ID/PASS", text_color="red"
             )
             self.lbl_err.grid(row=4)
             timeout = Timer(2.0, lambda: self.lbl_err.grid_forget())
