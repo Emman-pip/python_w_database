@@ -102,6 +102,8 @@ class App(customtkinter.CTk):
         try:
             padding = 10
             result = select(id)
+            blue = "#838383"
+            blueish = "#aaaaaa"
             # print(result)
 
             self.frm_display_result = customtkinter.CTkFrame(
@@ -125,6 +127,7 @@ class App(customtkinter.CTk):
                 "prescription",
                 "description",
                 1,
+                blue,
             )
 
             self.records(
@@ -135,6 +138,7 @@ class App(customtkinter.CTk):
                 result[0][3],
                 result[0][4],
                 2,
+                blueish,
             )
         except:
             self.lbl_err = customtkinter.CTkLabel(
