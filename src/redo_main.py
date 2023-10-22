@@ -8,6 +8,7 @@ customtkinter.set_default_color_theme("dark-blue")
 customtkinter.set_appearance_mode("dark")
 customtkinter.deactivate_automatic_dpi_awareness()
 
+
 class App(customtkinter.CTk):
     def __init__(self):
         padding = 10
@@ -158,7 +159,7 @@ class App(customtkinter.CTk):
             "diagnosis",
             "prescription",
             "description",
-            1,
+            0,
             blue,
         )
         x = 0
