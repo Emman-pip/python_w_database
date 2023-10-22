@@ -4,17 +4,24 @@
 # 2. sqlite
 # 3. postgreSQL
 
-import sqlite3
+import mysql.connector as my
 
-con = sqlite3.connect("data.db")
+con = my.connect(
+    host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
+    database="bfronqa2lmvgzf0kknx2",
+    user="ujx2n1qf7n69vjbg",
+    password="qGqc18Xc28aj1G1dvmKo",
+)
+
 cur = con.cursor()
 
 
 def createTable():
     cur.execute(
-        "CREATE TABLE patients_tbl (patient_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT NOT NULL, diagnosis TEXT, prescription TEXT, description TEXT);"
+        "CREATE TABLE patients_tbl (patient_id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(35) NOT NULL, diagnosis VARCHAR(100), prescription VARCHAR(100), description VARCHAR(300));"
     )
     con.commit()
+    cur.close()
 
 
 def insertTo(*args):
@@ -22,6 +29,7 @@ def insertTo(*args):
         f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
     )
     con.commit()
+    cur.close()
 
 
 def select(id=None):
@@ -39,7 +47,7 @@ def select(id=None):
             WHERE patient_id = {id}
        """
         )
-    return rows.fetchall()
+    return cur.fetchall()
 
 
 def update(id, name, diagnosis, prescription, description):
@@ -51,6 +59,7 @@ def update(id, name, diagnosis, prescription, description):
     """
     )
     con.commit()
+    cur.close()
 
 
 def deleteWithID(id):
@@ -61,3 +70,8 @@ def deleteWithID(id):
     """
     )
     con.commit()
+    cur.close()
+
+
+def closeConnection():
+    con.close()
