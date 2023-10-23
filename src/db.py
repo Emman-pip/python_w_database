@@ -6,14 +6,35 @@
 
 import mysql.connector as my
 
-con = my.connect(
-    host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
-    database="bfronqa2lmvgzf0kknx2",
-    user="ujx2n1qf7n69vjbg",
-    password="qGqc18Xc28aj1G1dvmKo",
-)
+# import redo_main
 
-cur = con.cursor()
+import customtkinter
+
+
+class ErrorWindow(customtkinter.CTk):
+    def __init__(self):
+        super().__init__()
+        customtkinter.set_appearance_mode("dark")
+        self.grid_columnconfigure(0, weight=1)
+        self.title("ERROR")
+        self.lbl_error = customtkinter.CTkLabel(
+            self, text="ERROR: CHECK YOUR CONNECTION"
+        )
+        self.lbl_error.grid(row=0, column=0, pady=30, padx=30)
+
+
+try:
+    con = my.connect(
+        host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
+        database="bfronqa2lmvgzf0kknx2",
+        user="ujx2n1qf7n69vjbg",
+        password="qGqc18Xc28aj1G1dvmKo",
+    )
+
+    cur = con.cursor()
+except:
+    app = ErrorWindow()
+    app.mainloop()
 
 
 def createTable():
@@ -21,7 +42,6 @@ def createTable():
         "CREATE TABLE patients_tbl (patient_id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(35) NOT NULL, diagnosis VARCHAR(100), prescription VARCHAR(100), description VARCHAR(300));"
     )
     con.commit()
-    cur.close()
 
 
 def insertTo(*args):
@@ -29,7 +49,6 @@ def insertTo(*args):
         f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
     )
     con.commit()
-    cur.close()
 
 
 def select(id=None):
@@ -59,7 +78,6 @@ def update(id, name, diagnosis, prescription, description):
     """
     )
     con.commit()
-    cur.close()
 
 
 def deleteWithID(id):
@@ -70,7 +88,6 @@ def deleteWithID(id):
     """
     )
     con.commit()
-    cur.close()
 
 
 def closeConnection():
