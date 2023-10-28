@@ -22,16 +22,25 @@ class ErrorWindow(customtkinter.CTk):
         )
         self.lbl_error.grid(row=0, column=0, pady=30, padx=30)
 
+class db:
+    def  __init__(self):    
+        self.con = my.connect(
+            host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
+            database="bfronqa2lmvgzf0kknx2",
+            user="ujx2n1qf7n69vjbg",
+            password="qGqc18Xc28aj1G1dvmKo",
+        )
+        self.cur = con.cursor()        
 
-try:
-    con = my.connect(
-        host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
-        database="bfronqa2lmvgzf0kknx2",
-        user="ujx2n1qf7n69vjbg",
-        password="qGqc18Xc28aj1G1dvmKo",
-    )
+# try:
+#     con = my.connect(
+#         host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
+#         database="bfronqa2lmvgzf0kknx2",
+#         user="ujx2n1qf7n69vjbg",
+#         password="qGqc18Xc28aj1G1dvmKo",
+#     )
 
-    cur = con.cursor()
+#     cur = con.cursor()
 except:
     app = ErrorWindow()
     app.mainloop()
