@@ -104,9 +104,9 @@ class database:
         self.con.close()
 
 
-if __name__ == "redo_main":
+if __name__ != "__main__":
     try:
-        database()
+        database().con
     except:
         app = ErrorWindow()
         app.mainloop()
