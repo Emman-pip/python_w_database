@@ -23,8 +23,11 @@ class ErrorWindow(customtkinter.CTk):
         self.lbl_error.grid(row=0, column=0, pady=30, padx=30)
 
 
-class db:
+class database:
     def __init__(self):
+        pass
+
+    def connect(self):
         self.con = my.connect(
             host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
             database="bfronqa2lmvgzf0kknx2",
@@ -34,20 +37,24 @@ class db:
         self.cur = self.con.cursor()
 
     def createTable(self):
+        self.connect()
+
         self.cur.execute(
             "CREATE TABLE patients_tbl (patient_id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(35) NOT NULL, diagnosis VARCHAR(100), prescription VARCHAR(100), description VARCHAR(300));"
         )
         self.con.commit()
-        # self.closeConnection()
+        self.closeConnection()
 
     def insertTo(self, *args):
+        self.connect()
         self.cur.execute(
             f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
         )
         self.con.commit()
-        # self.closeConnection()
+        self.closeConnection()
 
     def select(self, id=None):
+        self.connect()
         if id == None:
             rows = self.cur.execute(
                 """
@@ -65,10 +72,12 @@ class db:
         """
             )
             data = self.cur.fetchall()
-            # self.closeConnection()
+            self.closeConnection()
         return data
 
     def update(self, id, name, diagnosis, prescription, description):
+        self.connect()
+
         self.cur.execute(
             f"""
             UPDATE patients_tbl
@@ -80,6 +89,8 @@ class db:
         self.closeConnection()
 
     def deleteWithID(self, id):
+        self.connect()
+
         self.cur.execute(
             f"""
             DELETE FROM patients_tbl
@@ -95,9 +106,7 @@ class db:
 
 if __name__ == "redo_main":
     try:
-        db()
+        database()
     except:
         app = ErrorWindow()
         app.mainloop()
-
-# TODO: find a way to make this object oriented approach work. It does not work because each time db class is called in the main file, a new connection is made. Thus overloading the system (only has 5 max connections).
