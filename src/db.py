@@ -22,82 +22,82 @@ class ErrorWindow(customtkinter.CTk):
         )
         self.lbl_error.grid(row=0, column=0, pady=30, padx=30)
 
+
 class db:
-    def  __init__(self):    
+    def __init__(self):
         self.con = my.connect(
             host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
             database="bfronqa2lmvgzf0kknx2",
             user="ujx2n1qf7n69vjbg",
             password="qGqc18Xc28aj1G1dvmKo",
         )
-        self.cur = con.cursor()        
+        self.cur = self.con.cursor()
 
-# try:
-#     con = my.connect(
-#         host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
-#         database="bfronqa2lmvgzf0kknx2",
-#         user="ujx2n1qf7n69vjbg",
-#         password="qGqc18Xc28aj1G1dvmKo",
-#     )
+    def createTable(self):
+        self.cur.execute(
+            "CREATE TABLE patients_tbl (patient_id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(35) NOT NULL, diagnosis VARCHAR(100), prescription VARCHAR(100), description VARCHAR(300));"
+        )
+        self.con.commit()
+        # self.closeConnection()
 
-#     cur = con.cursor()
-except:
-    app = ErrorWindow()
-    app.mainloop()
+    def insertTo(self, *args):
+        self.cur.execute(
+            f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
+        )
+        self.con.commit()
+        # self.closeConnection()
 
-
-def createTable():
-    cur.execute(
-        "CREATE TABLE patients_tbl (patient_id INT PRIMARY KEY AUTO_INCREMENT, name VARCHAR(35) NOT NULL, diagnosis VARCHAR(100), prescription VARCHAR(100), description VARCHAR(300));"
-    )
-    con.commit()
-
-
-def insertTo(*args):
-    cur.execute(
-        f"INSERT INTO patients_tbl (name, diagnosis, prescription, description) VALUES ('{args[0]}', '{args[1]}', '{args[2]}', '{args[3]}');"
-    )
-    con.commit()
-
-
-def select(id=None):
-    if id == None:
-        rows = cur.execute(
+    def select(self, id=None):
+        if id == None:
+            rows = self.cur.execute(
+                """
+                SELECT * FROM patients_tbl
             """
-            SELECT * FROM patients_tbl
+            )
+            data = self.cur.fetchall()
+            self.closeConnection()
+        else:
+            rows = self.cur.execute(
+                f"""
+                SELECT * 
+                FROM patients_tbl
+                WHERE patient_id = {id}
+        """
+            )
+            data = self.cur.fetchall()
+            # self.closeConnection()
+        return data
+
+    def update(self, id, name, diagnosis, prescription, description):
+        self.cur.execute(
+            f"""
+            UPDATE patients_tbl
+            SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{description}'
+            where patient_id = {id};
         """
         )
-    else:
-        rows = cur.execute(
+        self.con.commit()
+        self.closeConnection()
+
+    def deleteWithID(self, id):
+        self.cur.execute(
             f"""
-            SELECT * 
-            FROM patients_tbl
-            WHERE patient_id = {id}
-       """
+            DELETE FROM patients_tbl
+            where patient_id = {id}
+        """
         )
-    return cur.fetchall()
+        self.con.commit()
+        self.closeConnection
+
+    def closeConnection(self):
+        self.con.close()
 
 
-def update(id, name, diagnosis, prescription, description):
-    cur.execute(
-        f"""
-        UPDATE patients_tbl
-        SET name = '{name}', diagnosis = '{diagnosis}', prescription = '{prescription}', description = '{description}'
-        where patient_id = {id};
-    """
-    )
-    con.commit()
+if __name__ == "redo_main":
+    try:
+        db()
+    except:
+        app = ErrorWindow()
+        app.mainloop()
 
-
-def deleteWithID(id):
-    cur.execute(
-        f"""
-        DELETE FROM patients_tbl
-        where patient_id = {id}
-    """
-    )
-    con.commit()
-
-
-def closeConnection():
-    con.close()
+# TODO: find a way to make this object oriented approach work. It does not work because each time db class is called in the main file, a new connection is made. Thus overloading the system (only has 5 max connections).

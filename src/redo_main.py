@@ -13,6 +13,7 @@ class App(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
+        self.data = db()
         self.geometry("1000x370")
         self.title("Hospital Records")
         self.grid_rowconfigure(0, weight=1)  # configure grid system
@@ -101,7 +102,7 @@ class App(customtkinter.CTk):
     def searchFunc(self, id):
         try:
             padding = 10
-            result = select(id)
+            result = self.data.select(id)
             blue = "#838383"
             blueish = "#aaaaaa"
             # print(result)
@@ -163,7 +164,7 @@ class App(customtkinter.CTk):
             blue,
         )
         x = 0
-        for i in select():
+        for i in self.data.select():
             if x % 2 == 1:
                 self.records(
                     self.frm_records, i[0], i[1], i[2], i[3], i[4], i[0], blueish
@@ -219,6 +220,7 @@ class loginWindow(customtkinter.CTk):
     def __init__(self):
         padding = 10
         padding2 = 5
+        self.data = db()
         super().__init__()
         self.columnconfigure(0, weight=1)
         # self.geometry("1000x750")
@@ -269,6 +271,7 @@ class loginWindow(customtkinter.CTk):
 
 class RootUser(App):
     def __init__(self):
+        self.data = db()
         padding = 10
         super().__init__()
         self.btn_login.grid_forget()
@@ -343,6 +346,7 @@ class RootUser(App):
 
 class InsertWindow(customtkinter.CTk):
     def __init__(self):
+        self.data = db()
         padding = 10
         super().__init__()
         self.title("add records")
@@ -387,7 +391,7 @@ class InsertWindow(customtkinter.CTk):
         try:
             if self.ent_name.get() == "":
                 raise ValueError("value cannot be black")
-            insertTo(
+            self.data.insertTo(
                 self.ent_name.get(),
                 self.ent_diagnosis.get(),
                 self.ent_prescription.get(),
@@ -416,6 +420,7 @@ class DeleteWindow(customtkinter.CTk):
     def __init__(self):
         padding = 10
         super().__init__()
+        self.data = db()
         self.resizable(0, 0)
         self.title("delete records")
         self.frm_main = customtkinter.CTkFrame(self)
@@ -433,9 +438,9 @@ class DeleteWindow(customtkinter.CTk):
 
     def deleteAction(self, id):
         try:
-            if select(id) == []:
+            if self.data.select(id) == []:
                 raise ValueError("Out of Index")
-            deleteWithID(id)
+            self.data.deleteWithID(id)
             self.lbl_err = customtkinter.CTkLabel(
                 self.frm_main, text="RECORD DELETED", text_color="green"
             )
@@ -454,6 +459,7 @@ class DeleteWindow(customtkinter.CTk):
 class UpdateWindow(customtkinter.CTk):
     def __init__(self):
         super().__init__()
+        self.data = db()
         self.resizable(0, 0)
         self.title("update records")
         self.columnconfigure(0, weight=1)
@@ -479,7 +485,7 @@ class UpdateWindow(customtkinter.CTk):
     def chooseIdToDisplay(self, id):
         padding = 10
         try:
-            result = select(id)
+            result = self.data.select(id)
             if result == []:
                 raise ValueError("out of range")
         except:
@@ -531,7 +537,7 @@ class UpdateWindow(customtkinter.CTk):
 
     def updateAction(self):
         try:
-            update(
+            self.data.update(
                 self.ent_id.get(),
                 self.ent_name.get(),
                 self.ent_diagnosis.get(),
