@@ -4,7 +4,7 @@
 # 2. sqlite
 # 3. postgreSQL
 
-import mysql.connector as my
+import sqlite3
 
 # import redo_main
 
@@ -28,12 +28,7 @@ class database:
         pass
 
     def connect(self):
-        self.con = my.connect(
-            host="bfronqa2lmvgzf0kknx2-mysql.services.clever-cloud.com",
-            database="bfronqa2lmvgzf0kknx2",
-            user="ujx2n1qf7n69vjbg",
-            password="qGqc18Xc28aj1G1dvmKo",
-        )
+        self.con = sqlite3.connect("data.db")
         self.cur = self.con.cursor()
 
     def createTable(self):
@@ -106,7 +101,7 @@ class database:
 
 if __name__ != "__main__":
     try:
-        database().con
+        database()
     except:
         app = ErrorWindow()
         app.mainloop()
