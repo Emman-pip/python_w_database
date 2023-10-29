@@ -106,7 +106,7 @@ class database:
 
 if __name__ != "__main__":
     try:
-        database().con
+        database().connect()
     except:
         app = ErrorWindow()
         app.mainloop()
